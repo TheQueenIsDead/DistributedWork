@@ -3,16 +3,22 @@ version: '3'
 services:
 
   web:
-    image: python:3-alpine
-    command: python3 manage.py runserver 8000
+    build:
+      context: .
+      dockerfile: web.Dockerfile
+    command: python3 manage.py runserver 0.0.0.0:8000
+    working_dir: /app
+    environment:
+      PYTHONUNBUFFERED: 1
     ports:
-      - '80:8000'
+      - '6969:8000'
     volumes:
       - '.:/app'
     depends_on:
       - backend
       - broker
       - worker
+
 
   backend:
     image: redis:alpine
@@ -21,12 +27,17 @@ services:
 
   broker:
     image: rabbitmq:3.8.3-management-alpine
+    environment:
+      RABBITMQ_USERNAME:
     ports:
       - '8080:15672'
 
   worker:
-    build: celery.Dockerfile
-    command: celery -A proj beat -l info
+    build:
+      context: .
+      dockerfile: celery.Dockerfile
+    entrypoint: ""
+    command: celery -A WorkCentre worker -l info
     working_dir: /app
     volumes:
-      - './WorkCentre:/app'
+      - '.:/app'

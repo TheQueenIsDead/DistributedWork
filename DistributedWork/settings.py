@@ -82,6 +82,13 @@ DATABASES = {
     }
 }
 
+# Celery Configuration Files
+CELERY_BROKER_URL = 'amqp://guest:guest@broker:5672/'
+CELERY_RESULT_BACKEND = 'redis://backend:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Pacific/Auckland'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
