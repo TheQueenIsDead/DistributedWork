@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Work Centre</title>
+</head>
+<body>
+
+<p>
+    Hey guys! The time is currently: {{ time }}
+
+    <br>
+
+    Click here to start a new task:
+<form action='/work/create/' method='POST'> {% csrf_token %}
+    <button type='submit'> Create new</button>
+</form>
+</p>
+
+</body>
+</html>
