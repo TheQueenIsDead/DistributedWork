@@ -17,7 +17,3 @@ def wait(x):
     return None
 
 
-@shared_task
-def xsum(numbers):
-    return sum(numbers)
-

@@ -19,7 +19,6 @@ services:
       - broker
       - worker
 
-
   backend:
     image: redis:alpine
     ports:
@@ -27,8 +26,6 @@ services:
 
   broker:
     image: rabbitmq:3.8.3-management-alpine
-    environment:
-      RABBITMQ_USERNAME:
     ports:
       - '8080:15672'
 
@@ -37,7 +34,19 @@ services:
       context: .
       dockerfile: celery.Dockerfile
     entrypoint: ""
-    command: celery -A WorkCentre worker -l info
+    command: celery -A WorkCentre worker -l info --concurrency 10
     working_dir: /app
     volumes:
       - '.:/app'
+
+  monitor:
+    build:
+      context: .
+      dockerfile: celery.Dockerfile
+    entrypoint: ""
+    command: celery -A WorkCentre flower
+    ports:
+      - '5555:5555'
+    working_dir: /app
+    volumes:
+    - '.:/app'

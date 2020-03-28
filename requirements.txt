@@ -1,2 +1,5 @@
 celery
 django
+celery[redis]
+redis
+flower

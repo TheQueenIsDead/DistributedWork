@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <title>Work Centre</title>
 </head>
+
+
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
 <body>
 
 <p>
@@ -16,6 +23,76 @@
     <button type='submit'> Create new</button>
 </form>
 </p>
+
+{#{% with 'active scheduled reserved' as task_list %}#}
+{#    {% for task_type in task_list.split %}#}
+{#        {{ task_type }}#}
+{#    {% endfor %}#}
+{#{% endwith %}#}
+
+
+{% for state, hosts in tasks.items %}
+    <h1>{{ state }}</h1>
+    {% for host, tasks in hosts.items %}
+        <h2>{{ host }}</h2>
+{#        {{ tasks }}#}
+        <table>
+            <thead>
+            <tr>
+                <td>Acknowledged</td>
+                <td>Args</td>
+                <td>Delivery Info</td>
+                <td>Hostname</td>
+                <td>Id</td>
+                <td>Kwargs</td>
+                <td>Name</td>
+                <td>Time Start</td>
+                <td>Type</td>
+                <th>Worker Pid</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for task in tasks %}
+                <tr>
+                    <td>{{ task.acknowledged }}</td>
+                    <td>{{ task.args }}</td>
+                    <td>{{ task.delivery_info }}</td>
+                    <td>{{ task.hostname }}</td>
+                    <td>{{ task.id }}</td>
+                    <td>{{ task.kwargs }}</td>
+                    <td>{{ task.name }}</td>
+                    <td>{{ task.time_start }}</td>
+                    <td>{{ task.type }}</td>
+                    <td>{{ task.worker_pid }}</td>
+                <tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endfor %}
+
+{##}
+{#<h1>Active</h1>#}
+{#<ul>#}
+{#    {% for host in tasks.active %}#}
+{#        <h2>{{ host }}</h2>#}
+{#        {% for attribute in host %}#}
+{#            {{ attribute }}#}
+{#        {% endfor %}#}
+{#    {% endfor %}#}
+{#</ul>#}
+{#<h1>Scheduled</h1>#}
+{#<ul>#}
+{#    {% for task in tasks.scheduled %}#}
+{#        <li>{{ task }}</li>#}
+{#    {% endfor %}#}
+{#</ul>#}
+{#<h1>Reserved</h1>#}
+{#<ul>#}
+{#    {% for task in tasks.reserved %}#}
+{#        <li>{{ task }}</li>#}
+{#    {% endfor %}#}
+{#</ul>#}
 
 </body>
 </html>
