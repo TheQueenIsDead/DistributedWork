@@ -83,8 +83,19 @@ DATABASES = {
 }
 
 # Celery Configuration Files
-CELERY_BROKER_URL = 'amqp://guest:guest@broker:5672/'
-CELERY_RESULT_BACKEND = 'redis://backend:6379'
+
+
+print(os.getenv('DOCKER'))
+
+if os.getenv('DOCKER'):
+    print("Configured to use Docker hosts for backend services")
+    CELERY_HOST = 'backend'
+else:
+    print("Configured to use localhost for backend services")
+    CELERY_HOST = 'localhost'
+
+CELERY_BROKER_URL = f'redis://{CELERY_HOST}:6379/'
+CELERY_RESULT_BACKEND = f'redis://{CELERY_HOST}:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'

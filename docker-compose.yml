@@ -5,36 +5,31 @@ services:
   web:
     build:
       context: .
-      dockerfile: web.Dockerfile
+      dockerfile: Dockerfile
     command: python3 manage.py runserver 0.0.0.0:8000
     working_dir: /app
     environment:
       PYTHONUNBUFFERED: 1
+      DOCKER: 'True'
     ports:
       - '6969:8000'
     volumes:
       - '.:/app'
     depends_on:
       - backend
-      - broker
       - worker
 
   backend:
     image: redis:alpine
     ports:
-      - '6379'
-
-  broker:
-    image: rabbitmq:3.8.3-management-alpine
-    ports:
-      - '8080:15672'
+      - '6379:6379'
 
   worker:
     build:
       context: .
-      dockerfile: celery.Dockerfile
+      dockerfile: Dockerfile
     entrypoint: ""
-    command: celery -A WorkCentre worker -l info --concurrency 10
+    command: celery -A WorkCentre worker -l INFO --concurrency 10
     working_dir: /app
     volumes:
       - '.:/app'
@@ -42,7 +37,7 @@ services:
   monitor:
     build:
       context: .
-      dockerfile: celery.Dockerfile
+      dockerfile: Dockerfile
     entrypoint: ""
     command: celery -A WorkCentre flower
     ports:
