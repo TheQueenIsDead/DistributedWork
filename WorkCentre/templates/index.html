@@ -13,6 +13,8 @@ table, th, td {
 </style>
 <body>
 
+
+
 <p>
     Hey guys! The time is currently: {{ time }}
 
@@ -24,11 +26,7 @@ table, th, td {
 </form>
 </p>
 
-{#{% with 'active scheduled reserved' as task_list %}#}
-{#    {% for task_type in task_list.split %}#}
-{#        {{ task_type }}#}
-{#    {% endfor %}#}
-{#{% endwith %}#}
+
 
 
 {% for state, hosts in tasks.items %}
